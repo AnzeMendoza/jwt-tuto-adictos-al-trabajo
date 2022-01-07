@@ -31,7 +31,6 @@ public class JwtAuthenticationFailureHandler implements AuthenticationFailureHan
         response.getWriter().append(jsonResponse());
     }
 
-    //Todo se puede crear una clase para no hacer esto.
     private String jsonResponse() {
         long date = new Date().getTime();
         return "{\"timestamp\": " + date + ", "

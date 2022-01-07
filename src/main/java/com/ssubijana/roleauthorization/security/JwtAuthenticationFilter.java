@@ -58,7 +58,4 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.getWriter().append(ResponseInfoJwtDTO.Create(response));
     }
 
-    private void jsonFormat(HttpServletResponse response, Map<?, ?> responseMap) throws IOException {
-        new ObjectMapper().writeValue(response.getOutputStream(), responseMap);
-    }
 }

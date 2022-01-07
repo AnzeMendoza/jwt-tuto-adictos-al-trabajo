@@ -20,7 +20,15 @@ public class ResponseInfoJwtDTO {
     }
 
     public static String Create(HttpServletResponse response){
-        return new ResponseInfoJwtDTO(response).toString();
+        return new ResponseInfoJwtDTO(response).toJson();
     }
 
+    private String toJson() {
+        return "{" +
+                "\"timestap\":\"" + timestap + "\"" +
+                ", \"code\":" + code +
+                ", \"path\":\"" + path + "\"" +
+                ", \"message\":\"" + message + "\"" +
+                '}';
+    }
 }
