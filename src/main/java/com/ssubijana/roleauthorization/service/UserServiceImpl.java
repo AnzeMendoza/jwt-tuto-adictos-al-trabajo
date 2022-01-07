@@ -18,6 +18,9 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private UserDetailsMapper userDetailsMapper;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService {
         if (retrievedUser == null) {
             throw new UsernameNotFoundException("Invalid username or password");
         }
-        return UserDetailsMapper.build(retrievedUser);
+        return userDetailsMapper.build(retrievedUser);
     }
 
     @Override

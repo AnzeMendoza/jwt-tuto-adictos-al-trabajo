@@ -5,6 +5,7 @@ import com.ssubijana.roleauthorization.mapper.UserMapper;
 import com.ssubijana.roleauthorization.service.UserService;
 import com.ssubijana.roleauthorization.web.presentation.AuthorizationRequest;
 import com.ssubijana.roleauthorization.web.presentation.UserResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,14 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class UserController {
 
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
     private UserService userService;
 
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+    @Autowired
+    private UserMapper userMapper;
 
     //@Secured("ROLE_ADMIN")
     @PreAuthorize("hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')")
@@ -35,7 +36,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        UserResponse userResponse = UserMapper.toResponse(user);
+        UserResponse userResponse = userMapper.toResponse(user);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
@@ -43,7 +44,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody AuthorizationRequest userRequest) {
         userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-        final User userToSave = userService.save(UserMapper.toDomain(userRequest));
+        final User userToSave = userService.save(userMapper.toDomain(userRequest));
 
         return new ResponseEntity<>(userToSave, HttpStatus.OK);
     }

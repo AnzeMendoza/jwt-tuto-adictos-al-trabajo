@@ -5,6 +5,7 @@ import com.ssubijana.roleauthorization.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserDetailsMapperTest {
+
+	@Autowired
+	private UserDetailsMapper userDetailsMapper;
 
 	private User user;
 
@@ -32,7 +36,7 @@ public class UserDetailsMapperTest {
 	@Test
 	public void buildUserDetailsShouldConvertFromUser() {
 		List<String> expectedAuthorities = Arrays.asList("ROLE_ADMIN", "ROLE_USER");
-		UserDetails userDetails = UserDetailsMapper.build(user);
+		UserDetails userDetails = userDetailsMapper.build(user);
 
 		assertThat(userDetails).isNotNull();
 		assertThat(userDetails.getUsername()).isEqualTo(user.getName());

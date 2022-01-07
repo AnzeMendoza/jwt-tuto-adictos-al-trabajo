@@ -10,9 +10,9 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 public class UserResponse implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private long id;
+    private long id;
 
-	private String name;
+    private String name;
 }
