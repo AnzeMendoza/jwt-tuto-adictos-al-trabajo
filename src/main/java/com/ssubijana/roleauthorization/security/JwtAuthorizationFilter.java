@@ -21,6 +21,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TokenProvider tokenProvider;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
@@ -36,11 +39,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         final String token = authorizationHeader.replace(Constants.TOKEN_BEARER_PREFIX + " ", "");
 
         // se obtiene username, si no esta lanza excepción.
-        String userName = TokenProvider.getUserName(token);
+        String userName = tokenProvider.getUserName(token);
         UserDetails user = userService.loadUserByUsername(userName);
 
         // se
-        UsernamePasswordAuthenticationToken authenticationToken = TokenProvider.getAuthentication(token, user);
+        UsernamePasswordAuthenticationToken authenticationToken = tokenProvider.getAuthentication(token, user);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

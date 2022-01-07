@@ -20,10 +20,13 @@ import static com.ssubijana.roleauthorization.utils.Constants.TOKEN_BEARER_PREFI
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    private TokenProvider tokenProvider;
+
     private AuthenticationManager authenticationManager;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+        tokenProvider = new TokenProvider();
         super.setAuthenticationFailureHandler(new JwtAuthenticationFailureHandler());
     }
 
@@ -46,7 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        String token = TokenProvider.generateToken(authResult);
+        String token = tokenProvider.generateToken(authResult);
         response.addHeader(HEADER_AUTHORIZATION_KEY, TOKEN_BEARER_PREFIX + " " + token);
     }
 }
